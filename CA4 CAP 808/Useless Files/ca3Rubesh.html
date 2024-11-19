@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Task List</title>
+    <link rel="stylesheet" href="css/styles.css">
+
+    <style>
+
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        /* Page styling */
+        body {
+            background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            color: #333;
+            text-align: center;
+            flex-direction: column;
+        }
+
+        /* Main Title */
+        .main-title {
+            font-size: 2.5em;
+            color: #fff;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        /* Container */
+        .task-container {
+            width: 90%;
+            max-width: 500px;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        /* Title */
+        .task-container h1 {
+            text-align: center;
+            font-size: 2em;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        /* Task list items */
+        .task-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .task-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            border-bottom: 1px solid #ddd;
+            animation: slideIn 1s ease forwards;
+        }
+
+        .task-item:last-child {
+            border-bottom: none;
+        }
+
+        .task-input {
+            border: none;
+            background: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            width: 70%;
+            color: #333;
+            padding: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .task-input:focus {
+            outline: none;
+            background-color: #e3f7ff;
+            border-radius: 5px;
+        }
+
+        /* Dropdown styling */
+        .status-select {
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            outline: none;
+            transition: background-color 0.3s;
+            font-size: 1em;
+        }
+
+        /* Status colors */
+        .status-select option[value="pending"] {
+            color: #ff6b6b; /* Light red */
+        }
+
+        .status-select option[value="in-progress"] {
+            color: #ffa94d; /* Light orange */
+        }
+
+        .status-select option[value="completed"] {
+            color: #63d471; /* Light green */
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Main Heading -->
+    <h1 class="main-title">Rubesh CA 3</h1>
+
+    <!-- Task List Container -->
+    <div class="task-container">
+        <h1>Daily Task List</h1>
+        <ul class="task-list">
+            <li class="task-item">
+                <input type="text" class="task-input" value="Morning Exercise">
+                <select class="status-select">
+                    <option value="pending">Pending</option>
+                    <option value="in-progress">In Progress</option>
+                    <option value="completed">Completed</option>
+                </select>
+            </li>
+            <li class="task-item">
+                <input type="text" class="task-input" value="Read 30 Minutes">
+                <select class="status-select">
+                    <option value="pending">Pending</option>
+                    <option value="in-progress">In Progress</option>
+                    <option value="completed">Completed</option>
+                </select>
+            </li>
+            <li class="task-item">
+                <input type="text" class="task-input" value="Work on Project">
+                <select class="status-select">
+                    <option value="pending">Pending</option>
+                    <option value="in-progress">In Progress</option>
+                    <option value="completed">Completed</option>
+                </select>
+            </li>
+            <li class="task-item">
+                <input type="text" class="task-input" value="Meditation">
+                <select class="status-select">
+                    <option value="pending">Pending</option>
+                    <option value="in-progress">In Progress</option>
+                    <option value="completed">Completed</option>
+                </select>
+            </li>
+            <li class="task-item">
+                <input type="text" class="task-input" value="Evening Walk">
+                <select class="status-select">
+                    <option value="pending">Pending</option>
+                    <option value="in-progress">In Progress</option>
+                    <option value="completed">Completed</option>
+                </select>
+            </li>
+        </ul>
+    </div>
+</body>
+</html>

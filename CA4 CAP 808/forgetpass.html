@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Recovery</title>
+    <style>
+        /* Reset and basic styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url('Rubesh2.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 0;
+        }
+
+        .recovery-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 320px;
+            transition: all 0.3s ease;
+        }
+
+        .recovery-container h2 {
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            color: #3eb489;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 30px;
+        }
+
+        .recovery-container input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .recovery-container input:focus {
+            border-color: #3eb489;
+        }
+
+        .recovery-container button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            background-color: #3eb489;
+            color: #fff;
+            border-radius: 8px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .recovery-container button:hover {
+            background-color: #2e8b57;
+            transform: translateY(-3px);
+        }
+
+        .back-link {
+            margin-top: 10px;
+            color: #3eb489;
+            font-size: 0.9em;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: #2e8b57;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="recovery-container">
+        <h2>Password Recovery</h2>
+        <input type="email" id="email" placeholder="Enter your email" required>
+        <button onclick="recoverPassword()">Recover Password</button>
+        <a href="login.html" class="back-link">Back to Login</a>
+    </div>
+
+    <script>
+        function recoverPassword() {
+            const email = document.getElementById('email').value;
+
+            if (email) {
+                // Simulate the password recovery process
+                setTimeout(function() {
+                    window.location.href = 'recoverpass.html'; // Redirect to the success page
+                }, 1000);
+            } else {
+                alert('Please enter a valid email address!');
+            }
+        }
+    </script>
+
+</body>
+
+</html>

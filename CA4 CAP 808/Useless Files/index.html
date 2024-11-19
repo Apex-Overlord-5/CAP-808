@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Daily Task List</title>
+    <link rel="stylesheet" href="css/styles.css">
+    
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Page styling */
+        body {
+            background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            color: #333;
+            text-align: center;
+            flex-direction: column;
+            overflow: hidden;
+            transition: background-color 0.5s;
+        }
+
+        /* Main Title */
+        .main-title {
+            font-size: 2.5em;
+            color: #fff;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        /* Container */
+        .task-container {
+            width: 90%;
+            max-width: 600px;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        /* Progress bar */
+        .progress-bar {
+            width: 100%;
+            background-color: #f3f3f3;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .progress-bar-fill {
+            height: 20px;
+            background: linear-gradient(to right, #63d471, #3eb489);
+            width: 0%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        /* Task list items */
+        .task-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .task-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            border-bottom: 1px solid #ddd;
+            animation: slideIn 1s ease forwards;
+            transition: background-color 0.3s;
+        }
+
+        .task-item:last-child {
+            border-bottom: none;
+        }
+
+        .task-input {
+            border: none;
+            background: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            width: 50%;
+            color: #333;
+            padding: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .task-input:focus {
+            outline: none;
+            background-color: #e3f7ff;
+            border-radius: 5px;
+        }
+
+        /* New Features Styling */
+        .edit-button, .important-button {
+            margin-left: 10px;
+            cursor: pointer;
+            border: none;
+            background-color: #63d471;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            transition: background-color 0.3s;
+        }
+
+        .edit-button:hover, .important-button:hover {
+            background-color: #3eb489;
+        }
+
+        .important {
+            background-color: #ffe082 !important;
+            color: #333 !important;
+        }
+
+        .important-indicator {
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Hover effect */
+        .task-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* Add New Task Button */
+        .add-task-button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #3eb489;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .add-task-button:hover {
+            background-color: #2e8b57;
+        }
+
+        /* Dark mode toggle */
+        .dark-mode {
+            background: #333;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Main Heading -->
+    <h1 class="main-title">Rubesh CA 3 - Enhanced Task List</h1>
+
+    <!-- Progress Tracker -->
+    <div class="progress-bar">
+        <div class="progress-bar-fill" id="progress-bar-fill"></div>
+    </div>
+
+    <!-- Task List Container -->
+    <div class="task-container">
+        <h1>Daily Task List</h1>
+        <ul class="task-list" id="task-list">
+            <!-- Tasks will be dynamically generated here -->
+        </ul>
+        <button class="add-task-button" onclick="addNewTask()">Add New Task</button>
+        <button class="add-task-button" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+    </div>
+
+    <script>
+        let tasks = [
+            { name: "Morning Exercise", status: "pending", important: false },
+            { name: "Read 30 Minutes", status: "pending", important: false },
+            { name: "Work on Project", status: "pending", important: true },
+            { name: "Meditation", status: "pending", important: false },
+            { name: "Evening Walk", status: "pending", important: false }
+        ];
+
+        function renderTasks() {
+            const taskList = document.getElementById('task-list');
+            taskList.innerHTML = '';
+            tasks.forEach((task, index) => {
+                const taskItem = document.createElement('li');
+                taskItem.className = `task-item ${task.important ? 'important' : ''}`;
+                taskItem.innerHTML = `
+                    <input type="text" class="task-input" value="${task.name}" readonly>
+                    <button class="edit-button" onclick="editTask(${index})">Edit</button>
+                    <button class="important-button" onclick="toggleImportant(${index})">
+                        ${task.important ? 'Unmark Important' : 'Mark Important'}
+                    </button>
+                    <select class="status-select" onchange="updateTaskStatus(${index}, this.value)">
+                        <option value="pending" ${task.status === 'pending' ? 'selected' : ''}>Pending</option>
+                        <option value="in-progress" ${task.status === 'in-progress' ? 'selected' : ''}>In Progress</option>
+                        <option value="completed" ${task.status === 'completed' ? 'selected' : ''}>Completed</option>
+                    </select>
+                `;
+                taskList.appendChild(taskItem);
+            });
+        }
+
+        function editTask(index) {
+            const taskItem = document.querySelectorAll('.task-item')[index];
+            const taskInput = taskItem.querySelector('.task-input');
+            taskInput.readOnly = !taskInput.readOnly;
+            if (!taskInput.readOnly) {
+                taskInput.focus();
+                taskInput.addEventListener('blur', () => {
+                    tasks[index].name = taskInput.value;
+                    renderTasks();
+                });
+            }
+        }
+
+        function toggleImportant(index) {
+            tasks[index].important = !tasks[index].important;
+            renderTasks();
+        }
+
+        function addNewTask() {
+            tasks.push({ name: "New Task", status: "pending", important: false });
+            renderTasks();
+        }
+
+        function updateTaskStatus(index, status) {
+            tasks[index].status = status;
+            renderTasks();
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+
+        window.onload = renderTasks;
+    </script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        /* Reset and basic styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+            margin: 0;
+            background-image: url('Rubesh2.png');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 320px;
+            transition: all 0.3s ease;
+        }
+
+        .login-container:hover {
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .login-container h2 {
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            color: #3eb489;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 30px;
+        }
+
+        .login-container input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .login-container input:focus {
+            border-color: #3eb489;
+        }
+
+        .login-container button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            background-color: #3eb489;
+            color: #fff;
+            border-radius: 8px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .login-container button:hover {
+            background-color: #2e8b57;
+            transform: translateY(-3px);
+        }
+
+        /* Adding some subtle animations */
+        .login-container h2,
+        .login-container input,
+        .login-container button {
+            animation: fadeInUp 0.5s ease-in-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .forgot-password {
+            margin-top: 10px;
+            color: #3eb489;
+            font-size: 0.9em;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .forgot-password:hover {
+            color: #2e8b57;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-container">
+        <h2>Login</h2>
+        <input type="text" id="username" placeholder="Username" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button onclick="login()">Login</button>
+        <a href="forgetpass.html" class="forgot-password">Forgot Password?</a> <!-- Redirect to password recovery page -->
+    </div>
+
+    <script>
+        // Sample credentials (For demonstration purposes, you can replace this with a more secure method)
+        const validUsername = 'raman_rubesh';
+        const validPassword = 'password123';
+    
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+    
+            if (username === validUsername && password === validPassword) {
+                // Store login status in local storage and redirect to the task list page
+                localStorage.setItem('loggedIn', 'true');
+                window.location.href = 'newly.html';  // Ensure this matches your task management page name
+            } else {
+                alert('Invalid username or password!');
+            }
+        }
+    </script>
+
+</body>
+
+</html>

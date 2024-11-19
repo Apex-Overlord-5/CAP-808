@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Daily Task List with Motivation</title>
+    <link rel="stylesheet" href="css/styles.css">
+
+    <style>
+        /* Reset and basic styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url('Rubesh2.png');
+            background-size: cover; /* Ensures image covers entire screen */
+            background-position: center;
+            color: #333;
+            text-align: center;
+            flex-direction: column;
+            overflow: hidden;
+            transition: background-color 0.5s, background-image 0.5s;
+        }
+
+        .main-title {
+            font-size: 2.5em;
+            color: #fff;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .task-container {
+            width: 90%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            padding: 25px;
+            animation: fadeIn 1.5s ease-in-out;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            background-color: #f3f3f3;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .progress-bar-fill {
+            height: 20px;
+            background: linear-gradient(to right, #63d471, #3eb489);
+            width: 0%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .task-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .task-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+            border-bottom: 1px solid #ddd;
+            animation: slideIn 1s ease forwards;
+            transition: background-color 0.3s;
+        }
+
+        .task-item:last-child {
+            border-bottom: none;
+        }
+
+        .task-input {
+            border: none;
+            background: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            width: 50%;
+            color: #333;
+            padding: 5px;
+            margin-right: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .task-input:focus {
+            outline: none;
+            background-color: #e3f7ff;
+            border-radius: 5px;
+        }
+
+        .important {
+            background-color: #ffe082 !important;
+            color: #333 !important;
+        }
+
+        .edit-button,
+        .important-button,
+        .delete-button {
+            padding: 8px 15px;
+            border-radius: 5px;
+            background-color: #3eb489;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+            margin-left: 10px;
+        }
+
+        .edit-button:hover,
+        .important-button:hover,
+        .delete-button:hover {
+            box-shadow: 0 0 10px 5px rgba(62, 180, 137, 0.8);
+            transform: scale(1.1);
+        }
+
+        .important-button {
+            background-color: #ff6b6b;
+        }
+
+        .important-button.active {
+            box-shadow: 0 0 10px 5px rgba(255, 107, 107, 0.8);
+            transform: scale(1.1);
+        }
+
+        .edit-button.active {
+            box-shadow: 0 0 10px 5px rgba(62, 180, 137, 0.8);
+            transform: scale(1.1);
+        }
+
+        .add-task-button {
+            margin-top: 20px;
+            padding: 12px 25px;
+            background-color: #3eb489;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .add-task-button:hover {
+            background-color: #2e8b57;
+        }
+
+        .motivational-section {
+            background: #3eb489;
+            color: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.5s;
+        }
+
+        .motivational-section p {
+            margin-bottom: 10px;
+        }
+
+        .motivational-section button {
+            background: #ff6b6b;
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .motivational-section button:hover {
+            background-color: #ff5252;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(-20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .task-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        .status-select {
+            font-weight: bold;
+            padding: 5px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .status-pending {
+            background-color: #ff6347;
+            color: white;
+        }
+
+        .status-in-progress {
+            background-color: #ffeb3b;
+            color: #333;
+        }
+
+        .status-completed {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        @keyframes blink {
+            0% {
+                background-color: #ffe082;
+            }
+
+            50% {
+                background-color: #ff6b6b;
+            }
+
+            100% {
+                background-color: #ffe082;
+            }
+        }
+
+        .task-item.blink {
+            animation: blink 1s ease-in-out 1;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 class="main-title">Rubesh CA 3 - Task List with Motivation</h1>
+
+    <div class="motivational-section" id="motivational-section">
+        <p id="motivational-quote">"Believe in yourself and all that you are. Know that there is something inside you that is greater than any obstacle."</p>
+        <button onclick="newMotivation()">Inspire Me!</button>
+    </div>
+
+    <div class="progress-bar">
+        <div class="progress-bar-fill" id="progress-bar-fill"></div>
+    </div>
+
+    <div class="task-container">
+        <h1>Daily Task List</h1>
+        <ul class="task-list" id="task-list"></ul>
+        <button class="add-task-button" onclick="addNewTask()">Add New Task</button>
+        <button class="add-task-button" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+    </div>
+
+    <script>
+        let tasks = [
+            { name: "Morning Exercise", status: "pending", important: false },
+            { name: "Read 30 Minutes", status: "pending", important: false },
+            { name: "Work on Project", status: "completed", important: true },
+            { name: "Meditation", status: "in-progress", important: false },
+            { name: "Evening Walk", status: "pending", important: false }
+        ];
+
+        let motivationalQuotes = [
+            "Don't watch the clock; do what it does. Keep going.",
+            "The secret of getting ahead is getting started.",
+            "You are capable of amazing things.",
+            "Hard work beats talent when talent doesn't work hard.",
+            "Success is not final, failure is not fatal: It is the courage to continue that counts.",
+            "Fuck it, We Ball"
+        ];
+        function changeTaskStatus(index, select) {
+    tasks[index].status = select.value;
+
+    if (tasks[index].status === 'completed') {
+        // Remove the task from the list
+        tasks.splice(index, 1);
+
+        // Display the motivational message and redirect to newly.html
+        alert("Good Work, One Step Ahead!");
+        setTimeout(() => {
+            window.location.href = "newly.html"; // Redirect after 2 seconds
+        }, 2000); // 2000 milliseconds = 2 seconds
+    }
+
+    renderTasks();
+}
+
+        function renderTasks() {
+            const taskList = document.getElementById('task-list');
+            taskList.innerHTML = '';
+
+            tasks.forEach((task, index) => {
+                const taskItem = document.createElement('li');
+                taskItem.classList.add('task-item');
+
+                if (task.important) {
+                    taskItem.classList.add('important');
+                }
+
+                taskItem.innerHTML = `
+                    <input class="task-input" value="${task.name}" readonly>
+                    <select class="status-select" onchange="changeTaskStatus(${index}, this)">
+                        <option value="pending" ${task.status === 'pending' ? 'selected' : ''}>Pending</option>
+                        <option value="in-progress" ${task.status === 'in-progress' ? 'selected' : ''}>In Progress</option>
+                        <option value="completed" ${task.status === 'completed' ? 'selected' : ''}>Completed</option>
+                    </select>
+                    <button class="edit-button" onclick="editTask(${index})">Edit</button>
+                    <button class="important-button ${task.important ? 'active' : ''}" onclick="toggleImportant(${index})">!</button>
+                    <button class="delete-button" onclick="deleteTask(${index})">Delete</button>
+                `;
+                taskList.appendChild(taskItem);
+            });
+
+            updateProgressBar();
+        }
+
+        function addNewTask() {
+            const taskName = prompt("Enter a new task name:");
+            if (taskName) {
+                tasks.push({ name: taskName, status: 'pending', important: false });
+                renderTasks();
+            }
+        }
+
+        function changeTaskStatus(index, select) {
+            tasks[index].status = select.value;
+            renderTasks();
+        }
+
+        function editTask(index) {
+            const newTaskName = prompt("Edit the task:", tasks[index].name);
+            if (newTaskName) {
+                tasks[index].name = newTaskName;
+                renderTasks();
+            }
+        }
+
+        function toggleImportant(index) {
+            tasks[index].important = !tasks[index].important;
+            renderTasks();
+        }
+
+        function deleteTask(index) {
+            tasks.splice(index, 1);
+            renderTasks();
+        }
+
+        function updateProgressBar() {
+            const totalTasks = tasks.length;
+            const completedTasks = tasks.filter(task => task.status === 'completed').length;
+            const progress = (completedTasks / totalTasks) * 100;
+            document.getElementById('progress-bar-fill').style.width = `${progress}%`;
+        }
+
+        function newMotivation() {
+            const randomQuote = motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
+            document.getElementById('motivational-quote').innerText = randomQuote;
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            if (document.body.classList.contains('dark-mode')) {
+                document.body.style.backgroundImage = "url('Rubesh3.png')";
+                document.body.style.backgroundSize = "cover";
+                document.body.style.backgroundPosition = "center";
+            } else {
+                document.body.style.backgroundImage = "url('Rubesh2.png')";
+                document.body.style.backgroundSize = "cover";
+                document.body.style.backgroundPosition = "center";
+            }
+        }
+
+        renderTasks();
+    </script>
+</body>
+
+</html>
