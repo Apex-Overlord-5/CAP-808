@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="css/styles.css">
 
     <style>
-        /* Reset and basic styling */
         * {
             margin: 0;
             padding: 0;
@@ -22,7 +21,7 @@
             align-items: center;
             height: 100vh;
             background-image: url('Rubesh2.png');
-            background-size: cover; /* Ensures image covers entire screen */
+            background-size: cover;
             background-position: center;
             color: #333;
             text-align: center;
@@ -37,6 +36,23 @@
             margin-bottom: 20px;
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
             animation: fadeIn 2s ease-in-out;
+        }
+
+        .logout-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .logout-button:hover {
+            background-color: #ff5252;
         }
 
         .task-container {
@@ -256,7 +272,9 @@
 </head>
 
 <body>
-    <h1 class="main-title">Rubesh CA 3 - Task List with Motivation</h1>
+    <button class="logout-button" onclick="logout()">Logout</button>
+
+    <h1 class="main-title">Rubesh CA 3 and CA 4 - Task List with Motivation</h1>
 
     <div class="motivational-section" id="motivational-section">
         <p id="motivational-quote">"Believe in yourself and all that you are. Know that there is something inside you that is greater than any obstacle."</p>
@@ -279,88 +297,99 @@
             { name: "Morning Exercise", status: "pending", important: false },
             { name: "Read 30 Minutes", status: "pending", important: false },
             { name: "Work on Project", status: "completed", important: true },
-            { name: "Meditation", status: "in-progress", important: false },
-            { name: "Evening Walk", status: "pending", important: false }
+            { name: "Meditation", status: "in-progress", important: false }
         ];
-
-        let motivationalQuotes = [
-            "Don't watch the clock; do what it does. Keep going.",
-            "The secret of getting ahead is getting started.",
-            "You are capable of amazing things.",
-            "Hard work beats talent when talent doesn't work hard.",
-            "Success is not final, failure is not fatal: It is the courage to continue that counts.",
-            "Fuck it, We Ball"
-        ];
-        function changeTaskStatus(index, select) {
-    tasks[index].status = select.value;
-
-    if (tasks[index].status === 'completed') {
-        // Remove the task from the list
-        tasks.splice(index, 1);
-
-        // Display the motivational message and redirect to newly.html
-        alert("Good Work, One Step Ahead!");
-        setTimeout(() => {
-            window.location.href = "newly.html"; // Redirect after 2 seconds
-        }, 2000); // 2000 milliseconds = 2 seconds
-    }
-
-    renderTasks();
-}
 
         function renderTasks() {
             const taskList = document.getElementById('task-list');
             taskList.innerHTML = '';
 
             tasks.forEach((task, index) => {
-                const taskItem = document.createElement('li');
-                taskItem.classList.add('task-item');
+                const listItem = document.createElement('li');
+                listItem.classList.add('task-item');
+                if (task.important) listItem.classList.add('important');
 
-                if (task.important) {
-                    taskItem.classList.add('important');
-                }
+            
+                const taskInput = document.createElement('input');
+                taskInput.value = task.name;
+                taskInput.readOnly = true;
+                taskInput.classList.add('task-input');
 
-                taskItem.innerHTML = `
-                    <input class="task-input" value="${task.name}" readonly>
-                    <select class="status-select" onchange="changeTaskStatus(${index}, this)">
-                        <option value="pending" ${task.status === 'pending' ? 'selected' : ''}>Pending</option>
-                        <option value="in-progress" ${task.status === 'in-progress' ? 'selected' : ''}>In Progress</option>
-                        <option value="completed" ${task.status === 'completed' ? 'selected' : ''}>Completed</option>
-                    </select>
-                    <button class="edit-button" onclick="editTask(${index})">Edit</button>
-                    <button class="important-button ${task.important ? 'active' : ''}" onclick="toggleImportant(${index})">!</button>
-                    <button class="delete-button" onclick="deleteTask(${index})">Delete</button>
+                
+                const statusSelect = document.createElement('select');
+                statusSelect.classList.add('status-select');
+                statusSelect.innerHTML = `
+                    <option value="pending" ${task.status === 'pending' ? 'selected' : ''}>Pending</option>
+                    <option value="in-progress" ${task.status === 'in-progress' ? 'selected' : ''}>In Progress</option>
+                    <option value="completed" ${task.status === 'completed' ? 'selected' : ''}>Completed</option>
                 `;
-                taskList.appendChild(taskItem);
+                statusSelect.classList.add(`status-${task.status}`);
+
+                statusSelect.addEventListener('change', () => {
+                    task.status = statusSelect.value;
+                    updateProgress();
+                    renderTasks();
+                });
+
+                const editButton = document.createElement('button');
+                editButton.innerText = 'Edit';
+                editButton.classList.add('edit-button');
+                editButton.addEventListener('click', () => editTask(index));
+
+                const deleteButton = document.createElement('button');
+                deleteButton.innerText = 'Delete';
+                deleteButton.classList.add('delete-button');
+                deleteButton.addEventListener('click', () => deleteTask(index));
+
+                const importantButton = document.createElement('button');
+                importantButton.innerText = '!';
+                importantButton.classList.add('important-button');
+                if (task.important) importantButton.classList.add('active');
+
+                importantButton.addEventListener('click', () => {
+                    task.important = !task.important;
+                    renderTasks();
+                });
+
+            
+                listItem.appendChild(taskInput);
+                listItem.appendChild(statusSelect);
+                listItem.appendChild(editButton);
+                listItem.appendChild(importantButton);
+                listItem.appendChild(deleteButton);
+
+                taskList.appendChild(listItem);
             });
 
-            updateProgressBar();
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const progressBarFill = document.getElementById('progress-bar-fill');
+            const totalTasks = tasks.length;
+            const completedTasks = tasks.filter(task => task.status === 'completed').length;
+            const percentage = totalTasks === 0 ? 0 : (completedTasks / totalTasks) * 100;
+
+            progressBarFill.style.width = percentage + '%';
         }
 
         function addNewTask() {
-            const taskName = prompt("Enter a new task name:");
-            if (taskName) {
-                tasks.push({ name: taskName, status: 'pending', important: false });
-                renderTasks();
-            }
-        }
-
-        function changeTaskStatus(index, select) {
-            tasks[index].status = select.value;
+            const newTask = { name: "New Task", status: "pending", important: false };
+            tasks.push(newTask);
             renderTasks();
         }
 
         function editTask(index) {
-            const newTaskName = prompt("Edit the task:", tasks[index].name);
-            if (newTaskName) {
-                tasks[index].name = newTaskName;
-                renderTasks();
-            }
-        }
+            const taskInput = document.getElementsByClassName('task-input')[index];
+            taskInput.readOnly = false;
+            taskInput.focus();
+            taskInput.classList.add('blink');
 
-        function toggleImportant(index) {
-            tasks[index].important = !tasks[index].important;
-            renderTasks();
+            taskInput.addEventListener('blur', () => {
+                taskInput.readOnly = true;
+                taskInput.classList.remove('blink');
+                tasks[index].name = taskInput.value;
+            });
         }
 
         function deleteTask(index) {
@@ -368,15 +397,17 @@
             renderTasks();
         }
 
-        function updateProgressBar() {
-            const totalTasks = tasks.length;
-            const completedTasks = tasks.filter(task => task.status === 'completed').length;
-            const progress = (completedTasks / totalTasks) * 100;
-            document.getElementById('progress-bar-fill').style.width = `${progress}%`;
-        }
-
         function newMotivation() {
-            const randomQuote = motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
+            const quotes = [
+                "Believe in yourself and all that you are. Know that there is something inside you that is greater than any obstacle.",
+                "The future belongs to those who believe in the beauty of their dreams.",
+                "Start where you are. Use what you have. Do what you can.",
+                "You are never too old to set another goal or to dream a new dream.",
+                "Success is not final, failure is not fatal: It is the courage to continue that counts.",
+                "Fuck it We Ball"
+            ];
+
+            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
             document.getElementById('motivational-quote').innerText = randomQuote;
         }
 
@@ -390,10 +421,16 @@
                 document.body.style.backgroundImage = "url('Rubesh2.png')";
                 document.body.style.backgroundSize = "cover";
                 document.body.style.backgroundPosition = "center";
-            }
+            }}
+
+        function logout() {
+    
+            window.location.href = 'login.html'; 
         }
 
-        renderTasks();
+        document.addEventListener('DOMContentLoaded', () => {
+            renderTasks();
+        });
     </script>
 </body>
 
