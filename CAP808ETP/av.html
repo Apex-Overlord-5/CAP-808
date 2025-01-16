@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML Video and Audio Example</title>
+</head>
+<body>
+
+  <h2>HTML Video and Audio Demonstration</h2>
+
+  <!-- Video Section -->
+  <h3>Video Example</h3>
+  <video controls autoplay loop width="640" height="360" poster="video-thumbnail.jpg">
+    <source src="video.mp4" type="video/mp4">
+    <source src="video.webm" type="video/webm">
+    <source src="video.ogv" type="video/ogg">
+    Your browser does not support the video tag.
+    <p>Click here to <a href="video.mp4">Download the video</a></p>
+  </video>
+
+  <h3>Audio Example</h3>
+  <!-- Audio Section -->
+  <audio controls autoplay loop muted preload="auto">
+    <source src="audio.mp3" type="audio/mp3">
+    <source src="audio.ogg" type="audio/ogg">
+    <source src="audio.wav" type="audio/wav">
+    Your browser does not support the audio element.
+  </audio>
+
+</body>
+</html>
